@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row">
+  <div class="col-lg-9">
+    <ul class="list-group">
+      <% @posts.each do |post| %>
+      <li class="list-group-item">
+        <div class="media">
+          <div class="media-left">
+            <a href="#">
+              <%= image_tag("64x64.png", class:"media-object") %>
+            </a>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">Media heading</h4>
+            <%= post.content %>
+          </div>
+        </div>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="col-lg-3">
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">tags</li>
+        <li class="nav-header"><%= @tag.tag %></li>
+      </ul>
+    </div><!--/.well -->
+  </div><!--/span-->
+</div><!--/row-->
+
+<p>
+  <strong>Tag:</strong>
+  <%= @tag.tag %>
+</p>
+
+<%= link_to 'Edit', edit_tag_path(@tag) %> |
+<%= link_to 'Back', tags_path %>

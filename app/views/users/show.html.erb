@@ -1,0 +1,53 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @user.name %>
+</p>
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>
+
+
+<div class="row">
+  <div class="col-lg-9">
+    <ul class="list-group">
+      <% @user.posts.each do |post| %>
+      <li class="list-group-item">
+        <div class="media">
+          <div class="media-left">
+            <a href="#">
+              <%= image_tag("64x64.png", class:"media-object") %>
+            </a>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">@<%= post.user.name %></h4>
+            <%= post.content %>
+          </div>
+        </div>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col-lg-3">
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+
+        <li class="nav-header"> ----tag_groups---- </li>
+        <% @user.groups.each do |group| %>
+        <li class="nav_header"> <%= group.name %> </li>
+        {
+        <% group.tags.each do |tag| %>
+          <%= tag.tag %> |
+        <% end %>
+        }
+        <% end %>
+
+        <li class="nav-header"> ----tags---- </li>
+        <% @user.tags.each do |tag| %>
+        <li class="nav_header"> <%= tag.tag %> </li>
+        <% end %>
+      </ul>
+    </div><!--/.well -->
+  </div><!--/span-->
+</div><!--/row-->

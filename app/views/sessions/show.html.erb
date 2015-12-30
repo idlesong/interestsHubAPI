@@ -1,0 +1,105 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row">
+  <div class="col-lg-9">
+
+    <ul class="nav nav-tabs">
+      <% @user.groups.each do |group| %>
+        <li role="presentation" ><a href= <%= "##{group.name}"%> data-toggle="tab"><%= group.name %></a></li>
+      <% end %>
+        <li role="presentation" ><a href="#ungrouped" data-toggle="tab">ungrouped</a></li>
+    </ul>
+
+    <div id="my-tab-content" class="tab-content">
+      <% @user.groups.each do |group| %>
+        <div class="tab-pane active" id=<%= group.name %> >
+          <h3><%= group.name %></h3>
+          <p>{
+            <% group.tags.each do |tag| %>
+              <%= tag.tag %> |
+            <% end %>
+          }</p>
+
+          <% filted_posts = group_feed_filter(@feed_items,group) %>
+          <ul class="list-group">
+            <% if filted_posts.any? %>
+              <% filted_posts.each do |post| %>
+              <li class="list-group-item">
+                <div class="media">
+                  <div class="media-left">
+                    <a href="#">
+                      <%= image_tag("64x64.png", class:"media-object") %>
+                    </a>
+                  </div>
+                  <div class="media-body">
+                    <h4 class="media-heading">@<%= post.user.name %>
+                      <% post.tags.each do |tag| %>
+                        <span class="label label-success"> <%= tag.tag %> </span>
+                      <% end %>
+                    </h4>
+                    <%= post.content %>
+
+                  </div>
+                </div>
+              </li>
+              <% end %>
+            <% end %>
+          </ul>
+
+
+        </div>
+      <% end %>
+
+      <div class="tab-pane active" id="ungrouped" >
+        <ul class="list-group">
+          <% if @feed_items.any? %>
+            <% @feed_items.each do |post| %>
+            <li class="list-group-item">
+              <div class="media">
+                <div class="media-left">
+                  <a href="#">
+                    <%= image_tag("64x64.png", class:"media-object") %>
+                  </a>
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading">@<%= post.user.name %>
+                    <% post.tags.each do |tag| %>
+                      <span class="label label-success"> <%= tag.tag %> </span>
+                    <% end %>
+                  </h4>
+                  <%= post.content %>
+
+                </div>
+              </div>
+            </li>
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+
+    </div>
+
+
+  </div>
+  <div class="col-lg-3">
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+
+        <li class="nav-header"> ----tag_groups---- </li>
+        <% @user.groups.each do |group| %>
+        <li class="nav_header"> <%= link_to group.name, group_path(group)%> </li>
+        {
+        <% group.tags.each do |tag| %>
+          <%= tag.tag %> |
+        <% end %>
+        }
+        <% end %>
+
+        <li class="nav-header"> ----tags---- </li>
+        <% @user.tags.each do |tag| %>
+        <li class="nav_header"> <%= tag.tag %> </li>
+        <% end %>
+      </ul>
+    </div><!--/.well -->
+  </div><!--/span-->
+</div><!--/row-->

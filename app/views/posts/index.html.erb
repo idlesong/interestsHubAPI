@@ -1,0 +1,72 @@
+<%- model_class = Post -%>
+
+<div class="row">
+  <div class="col-lg-9">
+    <ul class="list-group">
+      <% @posts.each do |post| %>
+      <li class="list-group-item">
+        <div class="media">
+          <div class="media-left">
+            <a href="#">
+              <%= image_tag("64x64.png", class:"media-object") %>
+            </a>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">Media heading</h4>
+            <%= post.content %>
+          </div>
+        </div>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col-lg-3">
+    <div class="well sidebar-nav">
+      <ul class="nav nav-list">
+        <li class="nav-header">tags</li>
+        <% @tags.each do |tag| %>
+        <li><%= link_to tag.tag, tag_path(tag)  %></li>
+        <% end %>
+      </ul>
+    </div><!--/.well -->
+  </div><!--/span-->
+</div><!--/row-->
+
+
+
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:content) %></th>
+      <th><%= model_class.human_attribute_name(:user_id) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= link_to post.id, post_path(post) %></td>
+        <td><%= post.content %></td>
+        <td><%= post.user_id %></td>
+        <td><%=l post.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_post_path(post), :class => 'btn btn-default btn-xs' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      post_path(post),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_post_path,
+            :class => 'btn btn-primary' %>
