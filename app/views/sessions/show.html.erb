@@ -97,7 +97,10 @@
 
         <li class="nav-header"> ----tags---- </li>
         <% @user.tags.each do |tag| %>
-        <li class="nav_header"> <%= tag.tag %> </li>
+        <li class="nav_header"> <%= tag.tag %>
+          <%= tag.posts.where("user_id = ?",@user.id).count %>
+          
+        </li>
         <% end %>
       </ul>
     </div><!--/.well -->

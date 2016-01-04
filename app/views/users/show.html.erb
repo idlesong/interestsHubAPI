@@ -5,6 +5,23 @@
   <%= @user.name %>
 </p>
 
+<a href="<%= following_user_path(@user) %>">
+  <strong id="following" class="stat">
+    <%= @user.following.count %>
+  </strong>
+  following
+</a>
+
+<a href="<%= followers_user_path(@user) %>">
+  <strong id="followers" class="stat">
+    <%= @user.followers.count %>
+  </strong>
+  followers
+</a>
+
+<%= render 'follow_form' if logged_in? %>
+
+</br>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
 
