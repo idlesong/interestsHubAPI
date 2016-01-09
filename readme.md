@@ -72,19 +72,3 @@
 1. merge sites: planet.gnome.org xbeta.info
 1. google reader
 1. google+ forum
-
-## associations
-user has_many posts
-post belongs_to user
-
-user has_many tags (interest point)  
-tag belongs_to user
-
-user has_many tag_groups (interest)
-tag_group belongs_to user
-
-post has_and_belongs_to_many tags
-tag has_and_belongs_to_many posts
-
-user has_and_belongs_to_many followings through Relationship
-user has_and_belongs_to_many followers through Relationship

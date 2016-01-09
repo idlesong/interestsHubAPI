@@ -1,0 +1,5 @@
+<% if current_user.subscribing?(tag) %>
+  <%= render partial: 'unsubscribe',  locals:{tag: tag}  %>
+<% else %>
+  <%= render partial: 'subscribe',  locals:{tag: tag}  %>
+<% end %>

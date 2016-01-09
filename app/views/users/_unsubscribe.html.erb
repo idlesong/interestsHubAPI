@@ -1,0 +1,4 @@
+<%= form_for(current_user.subscriptions.find_by(tag_id: tag.id),
+html: { method: :delete}) do |f| %>
+<%= tag.tag %> <%= f.submit "unsubscribe", class: "btn btn-default btn-xs" %>
+<% end %>

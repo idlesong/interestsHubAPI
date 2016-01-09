@@ -11,12 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151224071131) do
+ActiveRecord::Schema.define(version: 20160105080646) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
 
   create_table "groups_tags", id: false, force: :cascade do |t|
@@ -26,14 +27,6 @@ ActiveRecord::Schema.define(version: 20151224071131) do
 
   add_index "groups_tags", ["group_id"], name: "index_groups_tags_on_group_id"
   add_index "groups_tags", ["tag_id"], name: "index_groups_tags_on_tag_id"
-
-  create_table "groups_users", id: false, force: :cascade do |t|
-    t.integer "group_id"
-    t.integer "user_id"
-  end
-
-  add_index "groups_users", ["group_id"], name: "index_groups_users_on_group_id"
-  add_index "groups_users", ["user_id"], name: "index_groups_users_on_user_id"
 
   create_table "posts", force: :cascade do |t|
     t.text     "content"
@@ -61,6 +54,13 @@ ActiveRecord::Schema.define(version: 20151224071131) do
   add_index "relationships", ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true
   add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id"
 
+  create_table "subscriptions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "user_id"
+    t.integer  "tag_id"
+  end
+
   create_table "taggroups", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 20151224071131) do
     t.string   "tag"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
 
   create_table "tags_taggroups", id: false, force: :cascade do |t|
@@ -88,14 +89,6 @@ ActiveRecord::Schema.define(version: 20151224071131) do
 
   add_index "tags_taggroups", ["tag_id"], name: "index_tags_taggroups_on_tag_id"
   add_index "tags_taggroups", ["taggroup_id"], name: "index_tags_taggroups_on_taggroup_id"
-
-  create_table "tags_users", id: false, force: :cascade do |t|
-    t.integer "tag_id"
-    t.integer "user_id"
-  end
-
-  add_index "tags_users", ["tag_id"], name: "index_tags_users_on_tag_id"
-  add_index "tags_users", ["user_id"], name: "index_tags_users_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "name"

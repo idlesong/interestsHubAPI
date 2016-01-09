@@ -15,63 +15,72 @@ geek_words = %w{android_tv xbox xmbc raspberrypi}
 softeware_words = %w{gnomesoftware gimp atom vlc}
 
 all_words = web_design_words + linux_words + google_words + geek_words + softeware_words
+
 #use tags to define a user, then publish a post with tags
 all_words.each do |word|
-  tag = Tag.create(tag: word)
+  # tag = Tag.create(tag: word)
 
   name = "#{word}_guy"
   email = "#{name}@hub.com"
   password = "abc123"
   guy = User.create!( name: name, password: password, password_confirmation: password)
-  guy.tags << tag
+  tag = guy.tags.create(tag: word)
+  guy.subscribe(tag)
 
   content = Faker::Lorem.sentence(10)
   user_post = guy.posts.create({content: "title: about #{word} ---- #{content}"})
+  # user only can use his own tag to label post
   user_post.tags << tag
-  guy.tags << tag
 end
 
 idlesong = User.create(name: 'idlesong', email: 'idlesong@hub.com', password: 'abc123', password_confirmation: 'abc123')
 stallman = User.create(name: 'stallman', email: 'stallman@hub.com', password: 'abc123', password_confirmation: 'abc123')
 
 
-# tag_groups
-web_design_group = Group.create(name:'IT幻想改变生活')
-linux_group = Group.create(name: 'LinuxWorld')
-google_group = Group.create(name: 'Google')
-geek_group = Group.create(name: 'GeekWorld')
-software_group = Group.create(name: 'LinuxSoftware')
+# tags & tag_groups belongs_to user
+web_design_group = idlesong.groups.create(name:'IT幻想改变生活')
+geek_group = idlesong.groups.create(name: 'GeekWorld')
 
-web_design_group.tags << Tag.where(tag: web_design_words)
-linux_group.tags << Tag.where(tag: linux_words)
-google_group.tags << Tag.where(tag: google_words)
-geek_group.tags << Tag.where(tag: geek_words)
-software_group.tags << Tag.where(tag: softeware_words)
+web_design_words.each do |word|
+  w_tag = idlesong.tags.create(tag: word)
+  web_design_group.tags << w_tag
+  idlesong.subscribe(w_tag)
+end
+geek_words.each do |word|
+  g_tag = idlesong.tags.create(tag: word)
+  geek_group.tags << g_tag
+  idlesong.subscribe(g_tag)
+end
+
+linux_group = stallman.groups.create(name: 'LinuxWorld')
+software_group = stallman.groups.create(name: 'LinuxSoftware')
+
+linux_words.each do |word|
+  l_tag = stallman.tags.create(tag: word)
+  linux_group.tags << l_tag
+  stallman.subscribe(l_tag)
+end
+softeware_words.each do |word|
+  s_tag = stallman.tags.create(tag: word)
+  software_group.tags << s_tag
+  stallman.subscribe(s_tag)
+end
 
 # special feeds
 idlesong_post = idlesong.posts.create({content: 'yeman redux and so on'})
-idlesong_post.tags << Tag.where("tag = ?", "redux")
+idlesong_post.tags << idlesong.tags.where("tag = ?", "redux")
+
 stallman_post = stallman.posts.create({content: 'Introduce GNU world'})
-stallman_post.tags << Tag.where("tag = ?", "linux")
+stallman_post.tags << stallman.tags.where("tag = ?", "linux")
+# stallman_linux_tag = stallman.tags.find_by_tag("linux")
 
-# user groups add
-idlesong.groups << geek_group
-idlesong.groups << web_design_group
-idlesong.tags << geek_group.tags
-idlesong.tags << web_design_group.tags
-idlesong.tags << idlesong_post.tags
+# idlesong.subscribe( idlesong.tags.find_by_tag("redux") )
+# idlesong.subscribe(stallman_linux_tag)
 
-stallman.groups << linux_group
-stallman.groups << software_group
-stallman.tags << linux_group.tags
-stallman.tags << software_group.tags
-stallman.tags << stallman_post.tags
-
-
-users = User.all
-user = idlesong #users.first
-following = users[2..10]
-followers = users[11..19]
-
-following.each { |followed| user.follow(followed) }
-followers.each { |follower| follower.follow(user) }
+# users = User.all
+# user = idlesong #users.first
+# following = users[2..10]
+# followers = users[11..19]
+#
+# following.each { |followed| user.follow(followed) }
+# followers.each { |follower| follower.follow(user) }

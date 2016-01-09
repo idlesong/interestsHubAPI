@@ -14,27 +14,15 @@ class SessionsController < ApplicationController
 
   def show
     @user = User.find(current_user.id)
-    # @admin_tag_groups = @user.groups
-    # linux_group = @user.groups.find_by_name("LinuxWorld")
-    # # tag_names = []
-    # # linux_group.tags.each {|tag| tag_names << tag.tag}
 
-    @feed_items = current_user.feed
+    sources_tags = current_user.subscriptions.select(:tag_id)
+    posts_ids = Post.joins(:tags).where('tags.id' => sources_tags)
 
-    # @grouped_posts = @group_names =[]
-    #
-    # i = 0
-    # @user.groups.each do |group|
-    #   tag_names = []
-    #   group.tags.each { |tag| tag_names << tag.tag }
-    #   # logger.debug "log------:tagnames: #{tag_names.to_s}"
-    #   # group_posts = @feed_items.inside_group(tag_names)
-    #   group_posts = @feed_items.joins(:tags).where("tags.tag" => tag_names)
-    #   @grouped_posts[i] = group_posts
-    #   # @group_names[i] = group.name
-    #   i+=1
-    # end
-    # @linux_posts = @grouped_posts[0]
+    @feed_items = Post.where(id: posts_ids)
+
+    # @all_posts = Post.all
+    # logger.debug "log------:feed_items: #{@feed_items}"
+    # logger.debug "log------:all_posts: #{@all_posts}"
 
   end
 

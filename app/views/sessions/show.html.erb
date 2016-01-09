@@ -20,7 +20,7 @@
             <% end %>
           }</p>
 
-          <% filted_posts = group_feed_filter(@feed_items,group) %>
+          <% filted_posts = group_feed_filter(@feed_items, group) %>
           <ul class="list-group">
             <% if filted_posts.any? %>
               <% filted_posts.each do |post| %>
@@ -82,27 +82,29 @@
 
   </div>
   <div class="col-lg-3">
-    <div class="well sidebar-nav">
-      <ul class="nav nav-list">
+    <div class="list-group">
 
-        <li class="nav-header"> ----tag_groups---- </li>
-        <% @user.groups.each do |group| %>
-        <li class="nav_header"> <%= link_to group.name, group_path(group)%> </li>
-        {
-        <% group.tags.each do |tag| %>
-          <%= tag.tag %> |
-        <% end %>
-        }
-        <% end %>
+      <!-- tag groups lists-->
+      <% @user.groups.each do |group| %>
+        <a href="#" class="list-group-item">
+          <h4 class="list-group-item-heading"><%= group.name %></h4>
+          <p class="list-group-item-text">
+            {
+            <% group.tags.each do |tag| %>
+              <%= tag.tag %> |
+            <% end %>
+            }
+          </p>
+        </a>
+      <% end %>
 
-        <li class="nav-header"> ----tags---- </li>
-        <% @user.tags.each do |tag| %>
-        <li class="nav_header"> <%= tag.tag %>
-          <%= tag.posts.where("user_id = ?",@user.id).count %>
-          
-        </li>
-        <% end %>
-      </ul>
-    </div><!--/.well -->
+      <div class="list-group-item">+ add new group</div>
+      <!-- all tags -->
+      <% @user.tags.each do |tag| %>
+      <div class="list-group-item">
+        <%= tag.tag %>
+        <%= tag.posts.where("user_id = ?",@user.id).count %></div>
+      <% end %>
+    </div>
   </div><!--/span-->
 </div><!--/row-->

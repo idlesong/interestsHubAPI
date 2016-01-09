@@ -1,31 +1,5 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @user.name %>
-</p>
-
-<a href="<%= following_user_path(@user) %>">
-  <strong id="following" class="stat">
-    <%= @user.following.count %>
-  </strong>
-  following
-</a>
-
-<a href="<%= followers_user_path(@user) %>">
-  <strong id="followers" class="stat">
-    <%= @user.followers.count %>
-  </strong>
-  followers
-</a>
-
-<%= render 'follow_form' if logged_in? %>
-
-</br>
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
-
-
 <div class="row">
   <div class="col-lg-9">
     <ul class="list-group">
@@ -47,24 +21,33 @@
     </ul>
   </div>
   <div class="col-lg-3">
-    <div class="well sidebar-nav">
-      <ul class="nav nav-list">
+    <div class="list-group">
+      <div class="list-group-item">
+        <%= image_tag("64x64.png", class:"media-object") %>
+        @<%= @user.name %>
+        <h4>
+      </div>
 
-        <li class="nav-header"> ----tag_groups---- </li>
-        <% @user.groups.each do |group| %>
-        <li class="nav_header"> <%= group.name %> </li>
-        {
-        <% group.tags.each do |tag| %>
-          <%= tag.tag %> |
-        <% end %>
-        }
-        <% end %>
+      <!-- tag groups lists-->
+      <% @user.groups.each do |group| %>
+        <a href="#" class="list-group-item">
+          <h4 class="list-group-item-heading"><%= group.name %></h4>
+          <p class="list-group-item-text">
+            {
+            <% group.tags.each do |tag| %>
+              <%= tag.tag %> |
+            <% end %>
+            }
+          </p>
+        </a>
+      <% end %>
 
-        <li class="nav-header"> ----tags---- </li>
-        <% @user.tags.each do |tag| %>
-        <li class="nav_header"> <%= tag.tag %> </li>
-        <% end %>
-      </ul>
-    </div><!--/.well -->
+      <!-- all tags -->
+      <% @user.tags.each do |tag| %>
+      <div class="list-group-item">  <%= render partial: 'subscribe_form', locals:{tag: tag} %> </div>
+      <% end %>
+
+    </div>
+
   </div><!--/span-->
 </div><!--/row-->
